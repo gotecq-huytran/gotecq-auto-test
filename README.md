@@ -1,0 +1,1 @@
+# gotecq-auto-test
