@@ -29,7 +29,7 @@ class BasePage:
         return self.driver.find_elements(*locator)
 
     def click(self, locator: Locator):
-        el = self.wait.until(EC.visibility_of_element_located(locator))
+        el = self.wait.until(EC.element_to_be_clickable(locator))
         el.click()
         return el
 
