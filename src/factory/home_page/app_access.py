@@ -1,19 +1,19 @@
-from core.base_page import BasePage
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from src.__test__.conftest import initial_url
-from src.model.const import DEFAULT_TIME_OUT
 import os
+from urllib.parse import urljoin
+
+from selenium.webdriver.common.by import By
+
+from core.base_page import BasePage
+
 
 class HomePage(BasePage):
-    initial_url = os.getenv('BASE_URL')
+    initial_url = os.getenv("BASE_URL")
 
     def accessApp(self, app: str):
-        app_url = self.initial_url + '/tecq/' + app
-        selector = f'a[href*="{app_url}"]'
-        APP_PORTAL = (By.CSS_SELECTOR, selector)
-        wait = WebDriverWait(self.driver, timeout=DEFAULT_TIME_OUT)
-        wait.until(EC.visibility_of_element_located(APP_PORTAL))
-        self.click(APP_PORTAL)
-       
+        app_url = urljoin(self.initial_url, f"tecq/{app}")
+        APP_PORTAL = (By.CSS_SELECTOR, f'a[href*="{app_url}"]')
+
+        ele = self.wait_visible(APP_PORTAL)
+        # Dùng js để trigger click thay vì element.click() của selenium
+        # để fix lỗi element click intercepted
+        self.driver.execute_script("arguments[0].click();", ele)
