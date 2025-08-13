@@ -19,6 +19,9 @@ class BasePage:
     def wait_visible(self, locator):
         return self.wait.until(EC.visibility_of_element_located(locator))
 
+    def wait_invisible(self, locator):
+        return self.wait.until(EC.invisibility_of_element_located(locator))
+
     def open(self, url: str):
         self.driver.get(url)
 
