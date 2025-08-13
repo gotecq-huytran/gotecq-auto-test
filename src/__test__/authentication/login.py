@@ -1,11 +1,13 @@
+from selenium.webdriver.remote.webdriver import WebDriver
+from src.factory.authentication.login import LoginPage
 import pytest
 import os
-from src.factory.authentication.login import LoginPage
 from dotenv import load_dotenv
 
 load_dotenv()
 @pytest.mark.usefixtures("driver")
-class TestLogin:
+class TestLogin():
+    driver: WebDriver
     def login(self):
         loginPage = LoginPage(self.driver)
         loginPage.login(
@@ -15,7 +17,6 @@ class TestLogin:
 
     def login_200(self):
         self.login()
-
         # TODO: Replace with real validation logic
         assert True
   

@@ -3,7 +3,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from src.__test__.conftest import initial_url
-from src.model.const import DEFAULT_TIME_OUT
 import os
 
 class HomePage(BasePage):
@@ -12,8 +11,6 @@ class HomePage(BasePage):
     def accessApp(self, app: str):
         app_url = self.initial_url + '/tecq/' + app
         selector = f'a[href*="{app_url}"]'
-        APP_PORTAL = (By.CSS_SELECTOR, selector)
-        wait = WebDriverWait(self.driver, timeout=DEFAULT_TIME_OUT)
-        wait.until(EC.visibility_of_element_located(APP_PORTAL))
-        self.click(APP_PORTAL)
+        portalElement = (By.CSS_SELECTOR, selector)
+        self.click(portalElement)
        
