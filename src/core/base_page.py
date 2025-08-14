@@ -44,20 +44,28 @@ class BasePage:
         el.send_keys(text)
         return el
 
-    def set_dropdown(self, locator, value: str, test_id: str):
+    def set_dropdown(self, locator, value: str, test_id: str, op_locator: Locator):
         self.click(locator)
         opt_wait = WebDriverWait(self.driver, timeout=5)
 
-        option_locators = [
-            (
-                By.CSS_SELECTOR,
-                f'[data-element-key="{test_id}-dropdown"] > .rc-virtual-list [label="{value}"]',
-            ),
-            (
-                By.CSS_SELECTOR,
-                f'[data-element-key="{test_id}-dropdown"] > li[data-menu-id*="{value}"]',
-            ),
-        ]
+        option_locators = []
+
+        if op_locator:
+            option_locators.append(op_locator)
+        else:
+            option_locators.extend(
+                [
+                    (
+                        By.CSS_SELECTOR,
+                        f'[data-element-key="{test_id}-dropdown"] > .rc-virtual-list [label="{value}"]',
+                    ),
+                    (
+                        By.CSS_SELECTOR,
+                        f'[data-element-key="{test_id}-dropdown"] > li[data-menu-id*="{value}"]',
+                    ),
+                ]
+            )
+
         for ol in option_locators:
             try:
                 opt = opt_wait.until(EC.element_to_be_clickable(ol))
