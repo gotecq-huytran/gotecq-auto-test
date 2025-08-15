@@ -1,5 +1,10 @@
 from typing import Tuple
-from selenium.webdriver.remote.webdriver  import WebDriver
+
+from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,7 +15,8 @@ from time import sleep
 from model.const import DEFAULT_TIME_OUT 
 import logging
 
-Locator = Tuple[str, str] #attr and key
+Locator = Tuple[str, str]  # attr and key
+
 class BasePage:
     def __init__(self, driver: WebDriver, timeout: int = DEFAULT_TIME_OUT):
         self.driver = driver
@@ -19,6 +25,12 @@ class BasePage:
     def open(self, url: str) -> None:
         self.driver.get(url)
         self.driver.implicitly_wait(5)
+
+    def wait_visible(self, locator):
+        return self.wait.until(EC.visibility_of_element_located(locator))
+
+    def wait_invisible(self, locator):
+        return self.wait.until(EC.invisibility_of_element_located(locator))
 
     def get_cookies(self):
         return self.driver.get_cookies()
@@ -51,6 +63,18 @@ class BasePage:
        element = self.find(locator)
        element.send_keys(text)
        logging.info(f"✅ send_keys('{text}').")
+
+    def find_parent_ele(self, el: WebElement, tag: str):
+        return el.find_element("xpath", f"./ancestor::{tag}")
+
+    def close_input_dropdown(self, el: WebElement, tag: str):
+        ele = self.find_parent_ele(el, tag=tag)
+        ele.click()
+
+    def set_text(self, locator, text: str):
+        el = self.wait_visible(locator)
+        el.send_keys(text)
+        return el
 
     def set_dropdown(self, locator, value: str = None, test_id: str = None, op_locator: Locator = None):
         self.click(locator)
