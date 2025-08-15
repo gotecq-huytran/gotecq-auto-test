@@ -100,7 +100,6 @@ class TestAddMemberIdentifier(TestLogin):
 
 
     def edit_member_identifier(self):
-        self.add_member_identifier()
         sleep(2)
         addButton = self.__findActionButtonOnAddedRow('actionbtn-edit')
         page = self.page
@@ -126,8 +125,7 @@ class TestAddMemberIdentifier(TestLogin):
         page.wait_invisible(self.EDIT_FROM_LOCATOR)
 
 
-    def test_delete_member_identifier(self):
-        self.edit_member_identifier()
+    def delete_member_identifier(self):
         sleep(2)
         page = self.page
         deleteAction = self.__findActionButtonOnAddedRow('actionbtn-delete')
@@ -135,6 +133,12 @@ class TestAddMemberIdentifier(TestLogin):
         page.click(self.DELETE_BUTTON_LOCATOR)
         sleep(1)
         page.wait_invisible(self.DELETE_BUTTON_LOCATOR)
+
+    def test(self):
+        self.add_member_identifier()
+        self.edit_member_identifier()
+        self.delete_member_identifier()
+
 
         
 
