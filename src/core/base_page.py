@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
 
 from src.model.const import DEFAULT_WAIT_TIME_OUT
 
@@ -39,13 +40,22 @@ class BasePage:
     def type(self, locator: Locator, text: str):
         self.find(locator).send_keys(text)
 
+    def find_parent_ele(self, el: WebElement, tag: str):
+        return el.find_element("xpath", f"./ancestor::{tag}")
+
+    def close_input_dropdown(self, el: WebElement, tag: str):
+        ele = self.find_parent_ele(el, tag=tag)
+        ele.click()
+
     def set_text(self, locator, text: str):
         el = self.wait_visible(locator)
         el.send_keys(text)
         return el
 
-    def set_dropdown(self, locator, value: str, test_id: str, op_locator: Locator):
-        self.click(locator)
+    def set_dropdown(
+        self, locator, value: str, test_id: str, op_locator: Locator = None
+    ):
+        input_ele = self.click(locator)
         opt_wait = WebDriverWait(self.driver, timeout=5)
 
         option_locators = []
@@ -70,6 +80,7 @@ class BasePage:
             try:
                 opt = opt_wait.until(EC.element_to_be_clickable(ol))
                 opt.click()
+                self.close_input_dropdown(input_ele, "form")
                 return opt
             except TimeoutException:
                 continue
