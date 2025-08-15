@@ -9,5 +9,5 @@ SRC_DIR := src
 active: 
 	${ACTIVATE}
 test:
-	${ACTIVATE} && pytest -v ${ROOT_DIR}/${SRC_DIR}/${TEST_DIR}
+	${ACTIVATE} && pytest -v -s ${ROOT_DIR}/${SRC_DIR}/${TEST_DIR}
 
