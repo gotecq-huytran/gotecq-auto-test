@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import pytest
 import os
 initial_url = os.getenv('BASE_URL')
+
 @pytest.fixture(scope="class")
 def driver(request):
     driver = DriverFactory.get_driver()

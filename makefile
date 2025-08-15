@@ -1,7 +1,7 @@
 # Makefile
 ROOT_DIR = .
 VENV_DIR := venv
-ACTIVATE := source $(VENV_DIR)/bin/activate
+ACTIVATE := source $(VENV_DIR)/bin/activate.fish
 TEST_DIR := __test__
 SRC_DIR := src
 .PHONY: test
@@ -9,5 +9,5 @@ SRC_DIR := src
 active: 
 	${ACTIVATE}
 test:
-	${ACTIVATE} && pytest -v -s ${ROOT_DIR}/${SRC_DIR}/${TEST_DIR}
+	pytest -v ${ROOT_DIR}/${SRC_DIR}/${TEST_DIR}
 

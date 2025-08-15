@@ -4,6 +4,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
 from time import sleep
 from model.const import DEFAULT_TIME_OUT 
@@ -41,7 +42,11 @@ class BasePage:
         element = self.wait.until(EC.element_to_be_clickable(locator)) 
         element.click()
         sleep(1)
-
+    
+    def keyAction(self, locator: Locator, keys: Keys):
+        element = self.find(locator)
+        element.send_keys(keys)
+       
     def type(self, locator: Locator, text: str) -> None:
        element = self.find(locator)
        element.send_keys(text)
